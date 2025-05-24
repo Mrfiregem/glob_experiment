@@ -50,7 +50,7 @@ fn glob_to(
                 &tx,
                 relative_to,
                 program,
-                &scope,
+                scope,
             )?;
 
             // All of the real results from the directory listing
@@ -65,7 +65,7 @@ fn glob_to(
                             &tx,
                             relative_to,
                             program,
-                            &scope,
+                            scope,
                         )?;
                     }
                     Err(err) => {
@@ -93,7 +93,7 @@ fn handle_path_candidate<'a>(
     program: &'a Program,
     scope: &rayon::Scope<'a>,
 ) -> Result<(), SendError<anyhow::Result<PathBuf>>> {
-    let path_candidate = path.strip_prefix(relative_to).unwrap_or(&path);
+    let path_candidate = path.strip_prefix(relative_to).unwrap_or(path);
 
     let result = path_matches(path_candidate, program);
 

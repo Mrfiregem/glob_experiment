@@ -223,7 +223,7 @@ fn append_alternatives(out: &mut Program, choices: &[Pattern]) -> anyhow::Result
 }
 
 fn append_repeat(out: &mut Program, min: u32, max: u32, pattern: &Pattern) -> anyhow::Result<()> {
-    if out.counters >= u16::MAX {
+    if out.counters == u16::MAX {
         anyhow::bail!("Exceeded the number of repeats allowed in a glob pattern");
     }
 
