@@ -1,16 +1,19 @@
 use std::{io::Write, path::PathBuf, sync::Arc};
 
-use anyhow::{anyhow, bail};
-use glob_experiment::{compiler, globber, matcher, parser};
+use glob_experiment::{
+    compiler,
+    errors::{GlobError, Result as GlobResult},
+    globber, matcher, parser,
+};
 
-fn main() -> anyhow::Result<()> {
+fn main() -> GlobResult<()> {
     const USAGE: &str = "Usage: glob_experiment <pattern> <parse|compile|matches|glob> [path]";
 
     env_logger::init();
 
     let mut args = std::env::args_os().skip(1);
 
-    let pattern_string = args.next().ok_or_else(|| anyhow!(USAGE))?;
+    let pattern_string = args.next().ok_or(GlobError::cli(USAGE))?;
 
     match args.next().map(|s| s.into_encoded_bytes()).as_deref() {
         Some(b"parse") => {
@@ -23,7 +26,7 @@ fn main() -> anyhow::Result<()> {
             print!("{}", program);
         }
         Some(b"matches") => {
-            let path: PathBuf = args.next().ok_or_else(|| anyhow!(USAGE))?.into();
+            let path: PathBuf = args.next().ok_or(GlobError::cli(USAGE))?.into();
             let pattern = parser::parse(pattern_string);
             let program = compiler::compile(&pattern)?;
             let result = matcher::path_matches(&path, &program);
@@ -51,7 +54,7 @@ fn main() -> anyhow::Result<()> {
                 std::process::exit(1);
             }
         }
-        _ => bail!(USAGE),
+        _ => return Err(GlobError::cli(USAGE)),
     }
 
     Ok(())
