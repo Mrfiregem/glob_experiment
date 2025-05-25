@@ -12,7 +12,7 @@ pub enum GlobError {
     Cli(String),
 }
 
-pub type Result<T> = std::result::Result<T, GlobError>;
+pub type GlobResult<T> = Result<T, GlobError>;
 
 impl GlobError {
     pub fn cli<T: Into<String>>(msg: T) -> Self {

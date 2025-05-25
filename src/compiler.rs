@@ -2,7 +2,7 @@
 
 use std::path::{Component, PathBuf};
 
-use crate::errors::{GlobError, Result as GlobResult};
+use crate::errors::{GlobError, GlobResult};
 use crate::parser::{AstNode, CharacterClass, Pattern};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

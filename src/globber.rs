@@ -4,7 +4,7 @@ use std::sync::Arc;
 use std::{fs, io};
 
 use crate::compiler::Program;
-use crate::errors::{GlobError, Result as GlobResult};
+use crate::errors::{GlobError, GlobResult};
 use crate::matcher::path_matches;
 
 pub fn glob(
